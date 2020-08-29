@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5692584505184495955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5692584505184495953}
+  - component: {fileID: 5692584505184495954}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5692584505184495953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692584505184495955}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.7458487, y: 3.6386168, z: -96.292946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5692584505184495954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692584505184495955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4065f0671cb412248ba03047b236ecd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fragile: {fileID: 0}
+  nextLevel:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+  menuScreen:
+    sceneAsset: {fileID: 102900000, guid: 43f3465c256887d4f9c5c44c967ec84e, type: 3}
+    scenePath: Assets/MainMenu/MainMenu.unity
+  eventText: {fileID: 0}
+  _winSounds:
+  - {fileID: 8300000, guid: 550cd5d0af38eb54c90477041ba4cd47, type: 3}
+  - {fileID: 8300000, guid: fb15d4e4e043b4246b894d7c76b772f3, type: 3}
+  - {fileID: 8300000, guid: 01fa123f712be9140be7096c1bd9423d, type: 3}
+  - {fileID: 8300000, guid: 767aedc62d4ec004fa3be6c051cc6a1e, type: 3}
+  - {fileID: 8300000, guid: ade0de486ab1c3f499abd91ed7ca32c7, type: 3}
+  - {fileID: 8300000, guid: d5a0385d74bbf2e4687231e979f72176, type: 3}
+  _loseSounds:
+  - {fileID: 8300000, guid: 3b74490f4c45cdd419ebb80e9b767051, type: 3}
+  - {fileID: 8300000, guid: ccaae56929ce11b459db11ad04000d1d, type: 3}
+  - {fileID: 8300000, guid: 812a104be484b1840b24b7b341e1e1b7, type: 3}
+  - {fileID: 8300000, guid: 94f13b5da24a0bf4291daf1b11c1c095, type: 3}
+  - {fileID: 8300000, guid: 2225d0da62b36254fb0564c5f159dffe, type: 3}
+  - {fileID: 8300000, guid: af0009f023fcf7f47bd0d686b90fbc2b, type: 3}

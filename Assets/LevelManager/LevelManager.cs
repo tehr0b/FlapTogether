@@ -39,6 +39,8 @@ public class LevelManager : MonoBehaviour {
     fragile.OnGoalReached += OnGoalReached;
 
     CountdownLevelStart();
+
+    MusicManager.Instance.RequestTrack(MusicManager.Track.Gameplay);
   }
 
   private async void CountdownLevelStart() {
@@ -62,37 +64,36 @@ public class LevelManager : MonoBehaviour {
     }
   }
 
-  private void OnFragileBreak() {
+  private async void OnFragileBreak() {
     if (committedEnding) {
       return;
     }
 
     eventText.text = "You broke it!";
-    AudioSourceExtension.PlaySoundFromGroup(_loseSounds);
-
     committedEnding = true;
 
-    WaitAndRestartLevel();
-  }
-
-  private async void WaitAndRestartLevel() {
     await Task.Delay(TimeSpan.FromSeconds(3));
+    
+    AudioSourceExtension.PlaySoundFromGroup(_loseSounds);
+    
+    await Task.Delay(TimeSpan.FromSeconds(3));
+
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
 
-  private void OnGoalReached() {
+  private async void OnGoalReached() {
     if (committedEnding) {
       return;
     }
 
     eventText.text = "You delivered it!";
+    committedEnding = true;
 
     AudioSourceExtension.PlaySoundFromGroup(_winSounds);
 
-    committedEnding = true;
+    await Task.Delay(TimeSpan.FromSeconds(3));
 
-    // SceneManager.LoadScene(nextLevel);
-    WaitAndRestartLevel();
+    SceneManager.LoadScene(nextLevel ?? menuScreen);
   }
 
   private void Quit() {

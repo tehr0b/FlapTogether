@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -32,12 +33,12 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
   private void OnCollisionEnter2D(Collision2D other) {
     Debug.Log($"Fragile interaction. Force: {_rigidbody2D.velocity.magnitude}");
 
-    // Break if we exceeded max force
     if (other.collider.GetComponent<KillZone>()) {
       Break();
     }
 
-    if (_rigidbody2D.velocity.magnitude > _maxForce) {
+    // Break if we exceeded max force OR the other exceeded the max force
+    if (_rigidbody2D.velocity.magnitude + other.rigidbody?.velocity.magnitude > _maxForce) {
       Hit();
     }
 
@@ -47,7 +48,14 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
     }
   }
 
-  private void Hit() {
+  private bool protec = false;
+
+  [SerializeField]
+  private float protecSeconds = 0.5f;
+
+  private async void Hit() {
+    if (protec) return;
+    
     _currHits++;
     if (_currHits >= _maxHits) {
       Break();
@@ -55,6 +63,10 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
     }
 
     AudioSourceExtension.PlaySoundFromGroup(_hitSounds);
+
+    protec = true;
+    await Task.Delay(TimeSpan.FromSeconds(protecSeconds));
+    protec = false;
   }
 
   private void Break() {

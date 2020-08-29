@@ -31,6 +31,10 @@ public class MainMenu : MonoBehaviour {
   [SerializeField]
   private KeyCode[] _disallowedKeycodes;
 
+  void Start() {
+    MusicManager.Instance.RequestTrack(MusicManager.Track.Menu);
+  }
+  
   [UsedImplicitly]
   public async void NewGamePressed() {
     var keyboardEntry = FillOutKeyboardInputs();
