@@ -48,9 +48,9 @@ public class FollowCamera : MonoBehaviour {
     if (Mathf.Abs(verticalDistance) > Margin) {
       var transformPosition = transform.position;
       if (verticalDistance > 0) {
-        transformPosition.y = Mathf.Min(maxBounds.y, FollowTarget.position.x - Margin);
+        transformPosition.y = Mathf.Min(maxBounds.y, FollowTarget.position.y - Margin);
       } else {
-        transformPosition.y = Mathf.Max(minBounds.y, FollowTarget.position.x + Margin);
+        transformPosition.y = Mathf.Max(minBounds.y, FollowTarget.position.y + Margin);
       }
       transform.position = transformPosition;
     }

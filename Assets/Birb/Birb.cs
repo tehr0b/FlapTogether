@@ -27,10 +27,10 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   private Vector2 flapDirection = Vector2.up;
 
   [SerializeField]
-  private KeyCode keyCode = KeyCode.UpArrow;
+  private int playerIndex = 0;
 
   private static readonly int Flapping = Animator.StringToHash("Flapping");
-  private bool FlapPressed => Input.GetKeyDown(keyCode);
+  private bool FlapPressed => Input.GetKeyDown(BirbControlSingleton.GetKeycodeByPlayerIndex(playerIndex));
 
   private bool _flapOnCooldown;
   private bool _stunned;
