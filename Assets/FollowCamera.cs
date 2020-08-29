@@ -52,6 +52,7 @@ public class FollowCamera : MonoBehaviour {
       } else {
         transformPosition.y = Mathf.Max(minBounds.y, FollowTarget.position.y + Margin);
       }
+
       transform.position = transformPosition;
     }
   }

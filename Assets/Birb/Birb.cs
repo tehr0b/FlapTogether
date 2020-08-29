@@ -11,14 +11,13 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   public Rigidbody2D Rigidbody2D => _rigidbody2D;
   private Animator _animator;
   private SpriteRenderer _spriteRenderer;
-  private AudioSource _audioSource;
 
   [SerializeField]
   private AudioClip[] _flapSounds = null;
 
   [SerializeField]
   private AudioClip[] _bonkSounds = null;
-  
+
   [SerializeField]
   private ScriptableValue flapCooldownSeconds = null;
 
@@ -51,7 +50,6 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
     _rigidbody2D = GetComponent<Rigidbody2D>();
     _animator = GetComponent<Animator>();
     _spriteRenderer = GetComponent<SpriteRenderer>();
-    _audioSource = GetComponent<AudioSource>();
 
     flapDirection = flapDirection.normalized;
   }
@@ -83,10 +81,8 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   private CancellationTokenSource _flapCancellationTokenSource;
 
   private void Flap() {
-    if (_flapSounds.Length > 0) {
-      _audioSource.PlayOneShot(_flapSounds[Random.Range(0, _flapSounds.Length)]);
-    }
-    
+    AudioSourceExtension.PlaySoundFromGroup(_flapSounds);
+
     _rigidbody2D.AddForce(flapDirection * flapStrength.Value, ForceMode2D.Impulse);
     WaitToEnableFlap(flapCooldownSeconds.Value);
 
@@ -123,11 +119,10 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
 
   private void OnTriggerEnter2D(Collider2D other) {
     AddCloud(other.GetComponent<CloudZone>());
-    
+
     if (other.GetComponent<KillZone>()) {
       Destroy(gameObject);
     }
-
   }
 
   private void AddCloud(CloudZone cloud) {
@@ -152,12 +147,15 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
 
   [SerializeField]
   private GameObject stunObject;
-  
+
   private async void Stun(float seconds) {
+    AudioSourceExtension.PlaySoundFromGroup(_bonkSounds);
+
     _stunned = true;
     if (stunObject) {
       stunObject.SetActive(true);
     }
+
     await Task.Delay(TimeSpan.FromSeconds(seconds));
     _stunned = false;
     if (stunObject) {

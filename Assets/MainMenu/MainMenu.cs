@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
-
   public enum State {
     Main,
     Input,
@@ -25,7 +24,7 @@ public class MainMenu : MonoBehaviour {
 
   [SerializeField]
   private GameObject[] _creditsStateAssets = null;
-  
+
   [SerializeField]
   private SceneReference _firstLevel;
 
@@ -34,7 +33,6 @@ public class MainMenu : MonoBehaviour {
 
   [UsedImplicitly]
   public async void NewGamePressed() {
-
     var keyboardEntry = FillOutKeyboardInputs();
     await keyboardEntry;
 
@@ -49,7 +47,7 @@ public class MainMenu : MonoBehaviour {
     foreach (var birdInputText in _birdInputTexts) {
       birdInputText.text = "";
     }
-    
+
     var p1 = WaitForNextKeyboardInput(0);
     await p1;
     var p2 = WaitForNextKeyboardInput(1, p1.Result);
@@ -66,13 +64,13 @@ public class MainMenu : MonoBehaviour {
 
     // By here, one should be completed. Cancel the other.
     cancellationTokenSource.Cancel();
-    
+
     // If the escape was complete, go back to main menu. Otherwise, continue on.
     if (waitEscape.IsCompleted) {
       return false;
     }
-    
-    BirbControlSingleton.SetKeycodes(new []{p1.Result, p2.Result, p3.Result});
+
+    BirbControlSingleton.SetKeycodes(new[] {p1.Result, p2.Result, p3.Result});
     return true;
   }
 
@@ -83,16 +81,15 @@ public class MainMenu : MonoBehaviour {
   private Text[] _birdInputTexts = null;
 
   private async Task<KeyCode> WaitForNextKeyboardInput(int index, params KeyCode[] extraDisallows) {
+    _playerInputTextLabel.text = $"Press the input key for player {index + 1}";
 
-    _playerInputTextLabel.text = $"Press the input key for player {index+1}";     
-    
     while (true) {
       if (Input.anyKey) {
-        for (var i = 0; i < (int)KeyCode.Joystick8Button19; i++) {
-          if (_disallowedKeycodes.Contains((KeyCode) i) || extraDisallows.Contains((KeyCode)i)) {
+        for (var i = 0; i < (int) KeyCode.Joystick8Button19; i++) {
+          if (_disallowedKeycodes.Contains((KeyCode) i) || extraDisallows.Contains((KeyCode) i)) {
             continue;
           }
-          
+
           if (Input.GetKey((KeyCode) i)) {
             _birdInputTexts[index].text = $"{(KeyCode) i}";
             await Task.Delay(TimeSpan.FromMilliseconds(50));
@@ -127,7 +124,7 @@ public class MainMenu : MonoBehaviour {
       o.SetActive(enable);
     }
   }
-  
+
 
   [UsedImplicitly]
   public void QuitPressed() {
