@@ -47,6 +47,12 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
     flapDirection = flapDirection.normalized;
   }
 
+  private void Start() {
+    if (stunObject) {
+      stunObject.SetActive(false);
+    }
+  }
+
   void Update() {
     // We turn down timescale in the pre-game countdown. This is a bad hack. ¯\_(ツ)_/¯
     if (Time.timeScale < 1.0f) {
@@ -131,9 +137,18 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
     }
   }
 
+  [SerializeField]
+  private GameObject stunObject;
+  
   private async void Stun(float seconds) {
     _stunned = true;
+    if (stunObject) {
+      stunObject.SetActive(true);
+    }
     await Task.Delay(TimeSpan.FromSeconds(seconds));
     _stunned = false;
+    if (stunObject) {
+      stunObject.SetActive(false);
+    }
   }
 }

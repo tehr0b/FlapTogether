@@ -12,9 +12,6 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
   public Rigidbody2D Rigidbody2D => _rigidbody2D;
 
   [SerializeField]
-  private bool _ignoreBirbCollisions = true;
-
-  [SerializeField]
   private float _maxForce = 10.0f;
 
   private void Awake() {
@@ -22,10 +19,6 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
   }
 
   private void OnCollisionEnter2D(Collision2D other) {
-    // Ignore birb collisions
-    if (_ignoreBirbCollisions && other.collider.GetComponent<Birb>()) {
-      return;
-    }
     
     Debug.Log($"Fragile interaction. Force: {_rigidbody2D.velocity.magnitude}");
 
