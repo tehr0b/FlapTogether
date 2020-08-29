@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Birb : MonoBehaviour, ITakesContinuousForce {
@@ -10,7 +11,14 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   public Rigidbody2D Rigidbody2D => _rigidbody2D;
   private Animator _animator;
   private SpriteRenderer _spriteRenderer;
+  private AudioSource _audioSource;
 
+  [SerializeField]
+  private AudioClip[] _flapSounds = null;
+
+  [SerializeField]
+  private AudioClip[] _bonkSounds = null;
+  
   [SerializeField]
   private ScriptableValue flapCooldownSeconds = null;
 
@@ -43,6 +51,7 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
     _rigidbody2D = GetComponent<Rigidbody2D>();
     _animator = GetComponent<Animator>();
     _spriteRenderer = GetComponent<SpriteRenderer>();
+    _audioSource = GetComponent<AudioSource>();
 
     flapDirection = flapDirection.normalized;
   }
@@ -74,6 +83,10 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   private CancellationTokenSource _flapCancellationTokenSource;
 
   private void Flap() {
+    if (_flapSounds.Length > 0) {
+      _audioSource.PlayOneShot(_flapSounds[Random.Range(0, _flapSounds.Length)]);
+    }
+    
     _rigidbody2D.AddForce(flapDirection * flapStrength.Value, ForceMode2D.Impulse);
     WaitToEnableFlap(flapCooldownSeconds.Value);
 
