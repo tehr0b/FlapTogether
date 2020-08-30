@@ -15,7 +15,7 @@ public class ConintuousForceZone : MonoBehaviour {
 
   void LateUpdate() {
     foreach (var target in Targets) {
-      target.Rigidbody2D.AddForce(_continuousForce, ForceMode2D.Force);
+      target.Rigidbody2D.AddForce(_continuousForce * Time.deltaTime, ForceMode2D.Force);
     }
   }
 
