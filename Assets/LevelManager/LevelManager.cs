@@ -87,6 +87,12 @@ public class LevelManager : MonoBehaviour {
       return;
     }
 
+    foreach (var birb in FindObjectsOfType<Birb>()) {
+      foreach (var joint in birb.GetComponents<Joint2D>()) {
+        Destroy(joint);
+      }
+    }
+
     eventText.text = "You delivered it!";
     committedEnding = true;
 

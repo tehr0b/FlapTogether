@@ -17,6 +17,8 @@ public class FollowCamera : MonoBehaviour {
   [SerializeField]
   private Vector2 maxBounds = Vector2.zero;
 
+  private Camera _camera;
+
   public Vector2 PlacementPercentage {
     get {
       var position = transform.position;
@@ -24,6 +26,10 @@ public class FollowCamera : MonoBehaviour {
       var y = Mathf.InverseLerp(minBounds.y, maxBounds.y, position.y);
       return new Vector2(x, y);
     }
+  }
+
+  private void Awake() {
+    _camera = GetComponent<Camera>();
   }
 
   private void Start() {
@@ -70,7 +76,13 @@ public class FollowCamera : MonoBehaviour {
     Gizmos.color = Color.blue;
     Gizmos.DrawWireCube(transform.position, Vector3.one * Margin * 2.0f);
 
+    if (!_camera) {
+      _camera = GetComponent<Camera>();
+    }
+    
     Gizmos.color = Color.cyan;
-    Gizmos.DrawWireCube((minBounds + maxBounds) / 2.0f, maxBounds - minBounds + Vector2.one * Margin * 2.0f);
+    Gizmos.DrawWireCube((minBounds + maxBounds) / 2.0f,
+      maxBounds - minBounds + new Vector2(Mathf.Max(_camera.aspect, 1.0f), Mathf.Max(1.0f / _camera.aspect, 1.0f)) *
+      _camera.orthographicSize * 2.0f);
   }
 }
