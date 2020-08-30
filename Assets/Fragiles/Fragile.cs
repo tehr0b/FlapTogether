@@ -41,7 +41,7 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
   }
 
   private void Update() {
-    if (_warningChild) {
+    if (_warningChild && _currHits >= (_maxHits-1)) {
       _warningChild.SetActive(_rigidbody2D.velocity.magnitude > _maxForce);
     }
   }
