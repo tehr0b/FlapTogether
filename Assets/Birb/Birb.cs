@@ -32,6 +32,9 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   private ScriptableValue stunSeconds = null;
 
   [SerializeField]
+  private ScriptableValue stunKnockback = null;
+
+  [SerializeField]
   private Vector2 flapDirection = Vector2.up;
 
   [SerializeField]
@@ -110,7 +113,9 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
     AddCloud(other.collider.GetComponent<CloudZone>());
 
     if (other.collider.GetComponent<IStunGeometry>() != null) {
-      Stun(stunSeconds.Value);
+       var stunDirection = (other.contacts[0].point - (Vector2)transform.position).normalized;
+       _rigidbody2D.AddForce(-stunDirection * stunKnockback.Value, ForceMode2D.Impulse);
+       Stun(stunSeconds.Value);
     }
 
     if (other.collider.GetComponent<KillZone>()) {
