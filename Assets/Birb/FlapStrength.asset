@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd72d4edc3ec51c44931f4055d8393cb, type: 3}
   m_Name: FlapStrength
   m_EditorClassIdentifier: 
-  Value: 80
+  Value: 85
