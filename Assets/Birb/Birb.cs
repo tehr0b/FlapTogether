@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -95,13 +96,13 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
 
   private async void WaitToEnableFlap(float seconds) {
     _flapOnCooldown = true;
-    await Task.Delay(TimeSpan.FromSeconds(seconds));
+    await UniTask.Delay(TimeSpan.FromSeconds(seconds));
     _flapOnCooldown = false;
   }
 
   private async Task PlayFlappingAnimation(float seconds, CancellationToken token) {
     _animator.SetBool(Flapping, true);
-    await Task.Delay(TimeSpan.FromSeconds(seconds), token);
+    await UniTask.Delay(TimeSpan.FromSeconds(seconds), cancellationToken: token);
     _animator.SetBool(Flapping, false);
   }
 
@@ -159,7 +160,7 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
       stunObject.SetActive(true);
     }
 
-    await Task.Delay(TimeSpan.FromSeconds(seconds));
+    await UniTask.Delay(TimeSpan.FromSeconds(seconds));
     
     _stunned = false;
     _animator.SetBool(Stunned, false);

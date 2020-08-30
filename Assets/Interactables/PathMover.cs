@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PathMover : MonoBehaviour {
   [SerializeField]
-  private float speedForce;
+  private float speedForce = 0.0f;
 
   [SerializeField]
   private Vector2[] patrolPoints;

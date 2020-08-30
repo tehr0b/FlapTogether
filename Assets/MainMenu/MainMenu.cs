@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -34,7 +35,7 @@ public class MainMenu : MonoBehaviour {
   void Start() {
     MusicManager.Instance.RequestTrack(MusicManager.Track.Menu);
   }
-  
+
   [UsedImplicitly]
   public async void NewGamePressed() {
     var keyboardEntry = FillOutKeyboardInputs();
@@ -54,29 +55,21 @@ public class MainMenu : MonoBehaviour {
       birdInputText.text = "";
     }
 
-    var p1 = WaitForNextKeyboardInput(0);
-    await p1;
-    var p2 = WaitForNextKeyboardInput(1, p1.Result);
-    await p2;
-    var p3 = WaitForNextKeyboardInput(2, p1.Result, p2.Result);
-    await p3;
+    var p1 = await WaitForNextKeyboardInput(0);
+    var p2 = await WaitForNextKeyboardInput(1, p1);
+    var p3 = await WaitForNextKeyboardInput(2, p1, p2);
 
     _playerInputTextLabel.text = "Press Return to continue or Escape to return to the Main Menu.";
-    var cancellationTokenSource = new CancellationTokenSource();
-    var waitEnter = WaitForSpecificKeyboardInput(KeyCode.Return, cancellationTokenSource.Token);
-    var waitEscape = WaitForSpecificKeyboardInput(KeyCode.Escape, cancellationTokenSource.Token);
-
-    await Task.WhenAny(waitEnter, waitEscape);
-
-    // By here, one should be completed. Cancel the other.
-    cancellationTokenSource.Cancel();
-
+    
+    var waitEnter = await WaitForSpecificKeyboardInput(KeyCode.Return, KeyCode.Escape);
+    
     // If the escape was complete, go back to main menu. Otherwise, continue on.
-    if (waitEscape.IsCompleted) {
+    if (!waitEnter) {
       return false;
     }
 
-    BirbControlSingleton.SetKeycodes(new[] {p1.Result, p2.Result, p3.Result});
+    BirbControlSingleton.SetKeycodes(new[] {p1, p2, p3});
+    
     return true;
   }
 
@@ -86,7 +79,7 @@ public class MainMenu : MonoBehaviour {
   [SerializeField]
   private Text[] _birdInputTexts = null;
 
-  private async Task<KeyCode> WaitForNextKeyboardInput(int index, params KeyCode[] extraDisallows) {
+  private async UniTask<KeyCode> WaitForNextKeyboardInput(int index, params KeyCode[] extraDisallows) {
     _playerInputTextLabel.text = $"Press the input key for player {index + 1}";
 
     while (true) {
@@ -98,23 +91,27 @@ public class MainMenu : MonoBehaviour {
 
           if (Input.GetKey((KeyCode) i)) {
             _birdInputTexts[index].text = $"{(KeyCode) i}";
-            await Task.Delay(TimeSpan.FromMilliseconds(50));
+            await UniTask.Delay(TimeSpan.FromMilliseconds(50));
             return (KeyCode) i;
           }
         }
       }
 
-      await Task.Delay(TimeSpan.FromMilliseconds(50));
+      await UniTask.Delay(TimeSpan.FromMilliseconds(50));
     }
   }
 
-  private async Task WaitForSpecificKeyboardInput(KeyCode keyCode, CancellationToken cancellationToken) {
-    while (!cancellationToken.IsCancellationRequested) {
+  private async UniTask<bool> WaitForSpecificKeyboardInput(KeyCode keyCode, KeyCode cancelKey) {
+    while (true) {
       if (Input.GetKey(keyCode)) {
-        return;
+        return true;
       }
 
-      await Task.Delay(TimeSpan.FromMilliseconds(50));
+      if (Input.GetKey(cancelKey)) {
+        return false;
+      }
+
+      await UniTask.Yield();
     }
   }
 

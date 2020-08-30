@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -25,6 +26,12 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
 
   [SerializeField]
   private AudioClip[] _breakSounds = null;
+  
+  [SerializeField]
+  private GameObject _hitObjectPrefab;
+
+  [SerializeField]
+  private GameObject _destroyObjectPrefab;
 
   private void Awake() {
     _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -34,12 +41,12 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
     Debug.Log($"Fragile interaction. Force: {_rigidbody2D.velocity.magnitude}");
 
     if (other.collider.GetComponent<KillZone>()) {
-      Break();
+      Break(other);
     }
 
     // Break if we exceeded max force OR the other exceeded the max force
-    if (_rigidbody2D.velocity.magnitude + other.rigidbody?.velocity.magnitude > _maxForce) {
-      Hit();
+    if (other.relativeVelocity.magnitude > _maxForce) {
+      Hit(other);
     }
 
     // Check if we still exist and we reached a goal
@@ -48,36 +55,44 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
     }
   }
 
-  private bool protec = false;
+  private bool _protec;
 
   [SerializeField]
-  private float protecSeconds = 0.5f;
+  private float _protecSeconds = 0.5f;
 
-  private async void Hit() {
-    if (protec) return;
+  private async void Hit(Collision2D collision) {
+    if (_protec) return;
     
     _currHits++;
     if (_currHits >= _maxHits) {
-      Break();
+      Break(collision);
       return;
     }
 
     AudioSourceExtension.PlaySoundFromGroup(_hitSounds);
 
-    protec = true;
-    await Task.Delay(TimeSpan.FromSeconds(protecSeconds));
-    protec = false;
+    if (_hitObjectPrefab) {
+      Instantiate(_hitObjectPrefab, collision?.contacts[0].point ?? transform.position, Quaternion.identity);
+    }
+
+    _protec = true;
+    await UniTask.Delay(TimeSpan.FromSeconds(_protecSeconds));
+    _protec = false;
   }
 
-  private void Break() {
-    AudioSourceExtension.PlaySoundFromGroup(_breakSounds);
+  private void Break(Collision2D collision) {
+    AudioSourceExtension.PlaySoundFromGroup(_breakSounds); 
+    if (_destroyObjectPrefab) {
+      Instantiate(_destroyObjectPrefab, collision?.contacts[0].point ?? transform.position, Quaternion.identity);
+    }
+    
     OnBreak?.Invoke();
     Destroy(gameObject);
   }
 
   private void OnTriggerEnter2D(Collider2D other) {
     if (other.GetComponent<KillZone>()) {
-      Break();
+      Break(null);
     }
   }
 }

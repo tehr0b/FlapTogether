@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -46,15 +47,15 @@ public class LevelManager : MonoBehaviour {
   private async void CountdownLevelStart() {
     Time.timeScale = 0.0f;
     eventText.text = "3!";
-    await Task.Delay(TimeSpan.FromSeconds(1));
+    await UniTask.Delay(TimeSpan.FromSeconds(1), true);
     eventText.text = "2!";
-    await Task.Delay(TimeSpan.FromSeconds(1));
+    await UniTask.Delay(TimeSpan.FromSeconds(1), true);
     eventText.text = "1!";
-    await Task.Delay(TimeSpan.FromSeconds(1));
+    await UniTask.Delay(TimeSpan.FromSeconds(1), true);
     eventText.text = "Go!";
-    await Task.Delay(TimeSpan.FromSeconds(1));
+    await UniTask.Delay(TimeSpan.FromSeconds(1), true);
     Time.timeScale = 1.0f;
-    await Task.Delay(TimeSpan.FromSeconds(1));
+    await UniTask.Delay(TimeSpan.FromSeconds(1), true);
     eventText.text = "";
   }
 
@@ -72,11 +73,11 @@ public class LevelManager : MonoBehaviour {
     eventText.text = "You broke it!";
     committedEnding = true;
 
-    await Task.Delay(TimeSpan.FromSeconds(3));
+    await UniTask.Delay(TimeSpan.FromSeconds(3));
     
     AudioSourceExtension.PlaySoundFromGroup(_loseSounds);
     
-    await Task.Delay(TimeSpan.FromSeconds(3));
+    await UniTask.Delay(TimeSpan.FromSeconds(3));
 
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
@@ -91,7 +92,7 @@ public class LevelManager : MonoBehaviour {
 
     AudioSourceExtension.PlaySoundFromGroup(_winSounds);
 
-    await Task.Delay(TimeSpan.FromSeconds(3));
+    await UniTask.Delay(TimeSpan.FromSeconds(3));
 
     SceneManager.LoadScene(nextLevel ?? menuScreen);
   }
