@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5575442294726584832}
   - component: {fileID: 8352808966897586561}
   - component: {fileID: 2797920695476307260}
+  - component: {fileID: 1974265203}
   m_Layer: 12
   m_Name: Glass
   m_TagString: Untagged
@@ -130,7 +131,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 3
+  m_Constraints: 7
 --- !u!114 &2797920695476307260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,4 +149,20 @@ MonoBehaviour:
   _hitSounds: []
   _breakSounds:
   - {fileID: 8300000, guid: 44440c0c9d67f25409e8da6da6882e35, type: 3}
-  protecSeconds: 0
+  _hitObjectPrefab: {fileID: 0}
+  _destroyObjectPrefab: {fileID: 3223261320673164953, guid: bbaa4559763e80747a086d34f1709065,
+    type: 3}
+  _warningChild: {fileID: 0}
+  _protecSeconds: 0.5
+--- !u!114 &1974265203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2644155110029871960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f579719ccad008e44865c8edee8f9a58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
