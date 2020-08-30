@@ -63,6 +63,10 @@ public class LevelManager : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.Escape)) {
       Quit();
     }
+
+    if (Input.GetKeyDown(KeyCode.Return)) {
+      OnCheatPressed();
+    }
   }
 
   private async void OnFragileBreak() {
@@ -101,6 +105,23 @@ public class LevelManager : MonoBehaviour {
     await UniTask.Delay(TimeSpan.FromSeconds(3));
 
     SceneManager.LoadScene(nextLevel ?? menuScreen);
+  }
+
+  [SerializeField]
+  private bool cheatingAllowed = true;
+
+  private async void OnCheatPressed() {
+    if (!cheatingAllowed || committedEnding) {
+      return;
+    }
+    
+    eventText.text = "You cheated it!";
+    committedEnding = true;
+    
+    await UniTask.Delay(TimeSpan.FromSeconds(3));
+
+    SceneManager.LoadScene(nextLevel ?? menuScreen);
+    
   }
 
   private void Quit() {
