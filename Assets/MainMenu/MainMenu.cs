@@ -42,6 +42,8 @@ public class MainMenu : MonoBehaviour {
 
     if (keyboardEntry.Result) {
       SceneManager.LoadScene(_firstLevel);
+    } else {
+      SetState(State.Main);
     }
   }
 
