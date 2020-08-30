@@ -32846,6 +32846,17 @@ PrefabInstance:
       propertyPath: eventText
       value: 
       objectReference: {fileID: 1505791597}
+    - target: {fileID: 5692584505184495954, guid: 34beeb8c836c9984fa5a6abd537aacc5,
+        type: 3}
+      propertyPath: nextLevel.sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 8ad9ed241cac6f54e910f0e215220e87,
+        type: 3}
+    - target: {fileID: 5692584505184495954, guid: 34beeb8c836c9984fa5a6abd537aacc5,
+        type: 3}
+      propertyPath: nextLevel.scenePath
+      value: Assets/Scenes/Level03.unity
+      objectReference: {fileID: 0}
     - target: {fileID: 5692584505184495955, guid: 34beeb8c836c9984fa5a6abd537aacc5,
         type: 3}
       propertyPath: m_Name
