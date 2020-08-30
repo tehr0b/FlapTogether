@@ -33,12 +33,21 @@ public class Fragile : MonoBehaviour, ITakesContinuousForce {
   [SerializeField]
   private GameObject _destroyObjectPrefab;
 
+  [SerializeField]
+  private GameObject _warningChild;
+
   private void Awake() {
     _rigidbody2D = GetComponent<Rigidbody2D>();
   }
 
+  private void Update() {
+    if (_warningChild) {
+      _warningChild.SetActive(_rigidbody2D.velocity.magnitude > _maxForce);
+    }
+  }
+
   private void OnCollisionEnter2D(Collision2D other) {
-    Debug.Log($"Fragile interaction. Force: {_rigidbody2D.velocity.magnitude}");
+    Debug.Log($"Fragile interaction. Force: {other.relativeVelocity.magnitude}");
 
     if (other.collider.GetComponent<KillZone>()) {
       Break(other);
