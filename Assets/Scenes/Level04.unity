@@ -49436,7 +49436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7bd2ce69fe78184fb785ef48aba5bc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _continuousForce: {x: 0, y: 20000}
+  _continuousForce: {x: 0, y: 40000}
 --- !u!198 &1914618120
 ParticleSystem:
   m_ObjectHideFlags: 0

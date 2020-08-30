@@ -27,7 +27,7 @@ public class Spawner : MonoBehaviour {
 
   void Spawn() {
     var spawned = Instantiate(_spawnee, transform.position, Quaternion.identity);
-
+    Debug.Log("Spawn attempt");
     var rigidBody = spawned.GetComponent<Rigidbody2D>();
     if (rigidBody) {
       rigidBody.AddForce(
