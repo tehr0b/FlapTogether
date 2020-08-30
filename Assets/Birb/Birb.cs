@@ -148,16 +148,21 @@ public class Birb : MonoBehaviour, ITakesContinuousForce {
   [SerializeField]
   private GameObject stunObject;
 
+  private static readonly int Stunned = Animator.StringToHash("Stun");
+
   private async void Stun(float seconds) {
     AudioSourceExtension.PlaySoundFromGroup(_bonkSounds);
 
     _stunned = true;
+    _animator.SetBool(Stunned, true);
     if (stunObject) {
       stunObject.SetActive(true);
     }
 
     await Task.Delay(TimeSpan.FromSeconds(seconds));
+    
     _stunned = false;
+    _animator.SetBool(Stunned, false);
     if (stunObject) {
       stunObject.SetActive(false);
     }

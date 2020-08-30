@@ -17,6 +17,15 @@ public class FollowCamera : MonoBehaviour {
   [SerializeField]
   private Vector2 maxBounds = Vector2.zero;
 
+  public Vector2 PlacementPercentage {
+    get {
+      var position = transform.position;
+      var x = Mathf.InverseLerp(minBounds.x, maxBounds.x, position.x);
+      var y = Mathf.InverseLerp(minBounds.y, maxBounds.y, position.y);
+      return new Vector2(x, y);
+    }
+  }
+
   private void Start() {
     if (!FollowTarget) {
       Debug.LogError("Camera has no Follow Target assigned! Turning off");
